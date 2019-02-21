@@ -1,23 +1,21 @@
 package org.iesalandalus.programacion.reservasaulas.modelo.dao;
 
 import javax.naming.OperationNotSupportedException;
-
+import java.util.ArrayList;
 import org.iesalandalus.programacion.reservasaulas.modelo.dominio.Profesor;
 
 /**
  * @author Emanuel Martínez Lonardi
  *
  */
+
 public class Profesores {
-	private static final int MAX_PROFESORES = 10;
-	private int numProfesores;
-	private Profesor[] grupoProfesores;
-	
+	private ArrayList<Profesor> grupoProfesores;
+
 	public Profesores() {
-		this.numProfesores = 0;
-		this.grupoProfesores = new Profesor[this.MAX_PROFESORES];
+		this.grupoProfesores = new ArrayList<>();
 	}
-	
+
 	public Profesores(Profesores profesores) {
 		this.setProfesores(profesores);
 	}
@@ -27,102 +25,60 @@ public class Profesores {
 			throw new IllegalArgumentException("No se pueden copiar profesores nulos.");
 		}
 		this.grupoProfesores = this.copiaProfundaProfesores(profesores.grupoProfesores);
-		this.numProfesores = profesores.numProfesores;
-		
-	}
-	
-	private Profesor[] copiaProfundaProfesores(Profesor[] grupoProfesores) {
-		Profesor[] grupoProfesoresSalida = new Profesor[grupoProfesores.length];
-		for (int i = 0; i < grupoProfesores.length && grupoProfesores[i] != null; i++) {
-			grupoProfesoresSalida[i] = new Profesor(grupoProfesores[i]);
-		}
-		return grupoProfesoresSalida;
+
 	}
 
-	public Profesor[] getProfesores() {
+	private ArrayList<Profesor> copiaProfundaProfesores(ArrayList<Profesor> profesores) {
+		ArrayList<Profesor> profesoresSalida = new ArrayList<>();
+		for (Profesor profesor : profesores) {
+			profesoresSalida.add(new Profesor(profesor));
+		}
+		return profesoresSalida;
+	}
+
+	public ArrayList<Profesor> getProfesores() {
 		return this.copiaProfundaProfesores(this.grupoProfesores);
 	}
 
 	public int getNumProfesores() {
-		return this.numProfesores;
+		return this.grupoProfesores.size();
 	}
-	
+
 	public void insertar(Profesor profesor) throws OperationNotSupportedException {
 		if (profesor == null) {
 			throw new IllegalArgumentException("No se puede insertar un profesor nulo.");
 		}
-		int indice = this.buscarIndiceProfesor(profesor);
-		if (indiceNoSuperaTamano(indice) == false) {
-			this.grupoProfesores[indice] = new Profesor(profesor);
-			this.numProfesores++;
+		if (this.grupoProfesores.contains(profesor)) {
+			throw new OperationNotSupportedException("El profesor ya existe.");
 		} else {
-			if (indiceNoSuperaCapacidad(indice)) {
-				throw new OperationNotSupportedException("El profesor ya existe.");
-			} else {
-				throw new OperationNotSupportedException("No se aceptan más profesores.");
-			}
+			this.grupoProfesores.add(profesor);
 		}
-	}
-
-	private int buscarIndiceProfesor(Profesor profesor) {
-		int indice = 0;
-		boolean encontrado = false;
-		while (indiceNoSuperaTamano(indice) && encontrado == false) {
-			if (this.grupoProfesores[indice].equals(profesor)) {
-				encontrado = true;
-			} else {
-				indice++;
-			}
-		}
-		return indice;
-	}
-
-	private boolean indiceNoSuperaTamano(int indice) {
-		return indice < this.numProfesores;
-	}
-
-	private boolean indiceNoSuperaCapacidad(int indice) {
-		return indice < this.MAX_PROFESORES;
 	}
 
 	public Profesor buscar(Profesor profesor) {
-		Profesor encontrado = null;
-		int indice = buscarIndiceProfesor(profesor);
-		if (indiceNoSuperaTamano(indice)) {
-			encontrado = new Profesor(this.grupoProfesores[indice]);
+		Profesor profesorSalida = null;
+		if (this.grupoProfesores.contains(profesor)) {
+			profesorSalida = new Profesor(profesor);
 		}
-		return encontrado;
+		return profesorSalida;
 	}
 
 	public void borrar(Profesor profesor) throws OperationNotSupportedException {
 		if (profesor == null) {
 			throw new IllegalArgumentException("No se puede borrar un profesor nulo.");
 		}
-		int indice = buscarIndiceProfesor(profesor);
-		if (indiceNoSuperaTamano(indice)) {
-			this.desplazarUnaPosicionHaciaIzquierda(indice);
+		if (this.grupoProfesores.contains(profesor)) {
+			this.grupoProfesores.remove(profesor);
 		} else {
 			throw new OperationNotSupportedException("El profesor a borrar no existe.");
 		}
 	}
 
-	private void desplazarUnaPosicionHaciaIzquierda(int posicion) {
-		for (int i = posicion; i < this.numProfesores - 1; i++) {
-			this.grupoProfesores[i] = this.grupoProfesores[i + 1];
+	public ArrayList<String> representar() {
+		ArrayList<String> cadenaSalida = new ArrayList<>();
+		for (Profesor profesor : this.grupoProfesores) {
+			cadenaSalida.add(profesor.toString());
 		}
-		this.grupoProfesores[this.numProfesores] = null;
-		this.numProfesores--;
-	}
-
-	public String[] representar() {
-		String[] profesoresCadena = null;
-		if (this.numProfesores > 0) {
-			profesoresCadena = new String[this.numProfesores];
-			for (int i = 0; indiceNoSuperaTamano(i); i++) {
-				profesoresCadena[i] = this.grupoProfesores[i].toString();
-				System.out.println(i+1 + ".- " + profesoresCadena[i]);
-			}
-		}
-		return profesoresCadena;
+		return cadenaSalida;
 	}
 }
