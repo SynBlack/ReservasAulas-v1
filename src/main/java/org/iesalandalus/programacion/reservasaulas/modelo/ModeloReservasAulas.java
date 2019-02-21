@@ -3,8 +3,8 @@
  */
 package org.iesalandalus.programacion.reservasaulas.modelo;
 
+import java.util.ArrayList;
 import javax.naming.OperationNotSupportedException;
-
 import org.iesalandalus.programacion.reservasaulas.modelo.dao.Aulas;
 import org.iesalandalus.programacion.reservasaulas.modelo.dao.Profesores;
 import org.iesalandalus.programacion.reservasaulas.modelo.dao.Reservas;
@@ -29,7 +29,7 @@ public class ModeloReservasAulas {
 	}
 
 	
-	public Aula[] getAulas() {
+	public ArrayList<Aula> getAulas() {
 		return aulas.getAulas();
 	}
 	
@@ -37,7 +37,7 @@ public class ModeloReservasAulas {
 		return aulas.getNumAulas();
 	}
 	
-	public String[] representarAulas() {
+	public ArrayList<String> representarAulas() {
 		return aulas.representar();
 	}
 	
@@ -53,7 +53,7 @@ public class ModeloReservasAulas {
 		aulas.borrar(aula);
 	}
 	
-	public Profesor[] getProfesores() {
+	public ArrayList<Profesor> getProfesores() {
 		return profesores.getProfesores();
 	}
 	
@@ -61,7 +61,7 @@ public class ModeloReservasAulas {
 		return profesores.getNumProfesores();
 	}
 	
-	public String[] representarProfesores() {
+	public ArrayList<String> representarProfesores() {
 		return profesores.representar();
 	}
 	
@@ -77,7 +77,7 @@ public class ModeloReservasAulas {
 		profesores.borrar(profesor);
 	}
 	
-	public Reserva[] getReservas() {
+	public ArrayList<Reserva> getReservas() {
 		return reservas.getReservas();
 	}
 	
@@ -85,7 +85,7 @@ public class ModeloReservasAulas {
 		return reservas.getNumReservas();
 	}
 	
-	public String[] representarReservas() {
+	public ArrayList<String> representarReservas() {
 		return reservas.representar();
 	}
 	
@@ -101,15 +101,15 @@ public class ModeloReservasAulas {
 		reservas.borrar(reserva);
 	}
 	
-	public Reserva[] getReservasAula(Aula aula) {
+	public ArrayList<Reserva> getReservasAula(Aula aula) {
 		return reservas.getReservasAula(aula);
 	}
 	
-	public Reserva[] getReservasProfesor(Profesor profesor) {
+	public ArrayList<Reserva> getReservasProfesor(Profesor profesor) {
 		return reservas.getReservasProfesor(profesor);
 	}
 	
-	public Reserva[] getReservasPermanencia(Permanencia permanencia) {
+	public ArrayList<Reserva> getReservasPermanencia(Permanencia permanencia) {
 		return reservas.getReservasPermanencia(permanencia);
 	}
 	
