@@ -1,5 +1,7 @@
 package org.iesalandalus.programacion.reservasaulas.vista;
 
+import java.util.ArrayList;
+
 import javax.naming.OperationNotSupportedException;
 import org.iesalandalus.programacion.reservasaulas.modelo.ModeloReservasAulas;
 import org.iesalandalus.programacion.reservasaulas.modelo.dominio.Aula;
@@ -86,9 +88,14 @@ public class IUTextual {
 
 	public void listarAulas() {
 		Consola.mostrarCabecera("Listado Aulas");
-		String[] aulas = modelo.representarAulas();
-		if (aulas == null) {
+		ArrayList<String> aulas = modelo.representarAulas();
+		if (aulas.size() < 1) {
 			System.out.println("No existen Aulas para representar.");
+		} else {
+			int i = 1;
+			for (String s : aulas) {
+				System.out.println(i++ + ".- " + s);
+			}
 		}
 	}
 
@@ -149,9 +156,14 @@ public class IUTextual {
 
 	public void listarProfesores() {
 		Consola.mostrarCabecera("Lista de Profesores");
-		String[] profesores = modelo.representarProfesores();
-		if (profesores == null) {
+		ArrayList<String> profesores = modelo.representarProfesores();
+		if (profesores.size() < 1) {
 			System.out.println("No existen profesores para representar.");
+		} else {
+			int i = 1;
+			for (String s : profesores) {
+				System.out.println(i++ + ".- " + s);
+			}
 		}
 	}
 
@@ -206,9 +218,14 @@ public class IUTextual {
 
 	public void listarReservas() {
 		Consola.mostrarCabecera("Lista de reservas");
-		String[] reservas = modelo.representarReservas();
-		if (reservas == null) {
+		ArrayList<String> reservas = modelo.representarReservas();
+		if (reservas.size() < 1) {
 			System.out.println("No se ha realizado ninguna reserva.");
+		} else {
+			int i = 1;
+			for (String s : reservas) {
+				System.out.println(i++ + ".- " + s);
+			}
 		}
 	}
 
@@ -216,54 +233,47 @@ public class IUTextual {
 		Consola.mostrarCabecera("Lista de reservas por Aula");
 		Aula aula = Consola.leerAula();
 		if (aula.getNombre().matches(NOMBRE_VALIDO)) {
-			Reserva[] reservas = modelo.getReservasAula(aula);
-			if (reservas[0] == null) {
+			ArrayList<Reserva> reservas = modelo.getReservasAula(aula);
+			if (reservas.size() < 1) {
 				System.out.println("No existen reservas para el Aula: " + aula);
 			} else {
 				Consola.mostrarCabecera("Lista de reservas por Aula: " + aula);
-				for (int i = 0; i < reservas.length; i++) {
-					if (reservas[i] != null) {
-						System.out.println(reservas[i]);
-					}
+				int i = 1;
+				for (Reserva reserva : reservas) {
+					System.out.println(i++ + ".- " + reserva);
 				}
 			}
-		} else {
-			System.out.println("El nombre no es válido. " + aula);
 		}
+
 	}
 
 	public void listarReservasProfesor() {
 		Consola.mostrarCabecera("Lista de reservas por Profesor");
 		Profesor profesor = new Profesor(Consola.leerNombreProfesor(), "a@a.a");
 		if (profesor.getNombre().matches(NOMBRE_VALIDO)) {
-			Reserva[] reservas = modelo.getReservasProfesor(profesor);
-			if (reservas[0] == null) {
+			ArrayList<Reserva> reservas = modelo.getReservasProfesor(profesor);
+			if (reservas.size() < 1) {
 				System.out.println("No existen reservas para el Profesor: " + profesor);
 			} else {
 				Consola.mostrarCabecera("Lista de reservas por Profesor: " + profesor);
-				for (int i = 0; i < reservas.length; i++) {
-					if (reservas[i] != null) {
-						System.out.println(reservas[i]);
-					}
+				int i = 1;
+				for (Reserva reserva : reservas) {
+					System.out.println(i++ + ".- " + reserva);
 				}
 			}
-		} else {
-			System.out.println("El nombre no es válido. " + profesor.getNombre());
 		}
 	}
 
 	public void listarReservasPermanencia() {
 		Consola.mostrarCabecera("Lista de reservas por Permanencia");
 		Permanencia permanencia = new Permanencia(Consola.leerDia(), Consola.leerTramo());
-		Reserva[] reservas = modelo.getReservasPermanencia(permanencia);
-		if (reservas[0] == null) {
-			System.out.println("No existen reservas para la Permanencia: " + permanencia);
+		ArrayList<Reserva> reservas = modelo.getReservasPermanencia(permanencia);
+		if (reservas.size() < 1) {
 		} else {
 			Consola.mostrarCabecera("Lista de reservas por Permanencia: " + permanencia);
-			for (int i = 0; i < reservas.length; i++) {
-				if (reservas[i] != null) {
-					System.out.println(reservas[i]);
-				}
+			int i = 1;
+			for (Reserva reserva : reservas) {
+				System.out.println(i++ + ".- " + reserva);
 			}
 		}
 	}
